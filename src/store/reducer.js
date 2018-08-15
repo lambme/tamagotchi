@@ -1,76 +1,59 @@
 const initialState = {
     time: 0.0,
-    happiness: 0.0,
     body: {
-        type: 'round',
-        r: 80.0,
+        type: 'flesh',
         x: 100.0,
         y: 100.0,
+        r: 80.0,
         color: [0x88, 0xcc, 0xff],
         attachments: [
             {
-                type: 'round',
-                r: 10.0,
+                type: 'eye',
                 x: -30.0,
                 y: -50.0,
-                color: [0xff, 0xff, 0xff],
-                attachments: [
-                    {
-                        type: 'round',
-                        r: 6.0,
-                        x: 0.0,
-                        y: 0.0,
-                        color: [0x00, 0x00, 0x00]
-                    }
-                ]
+                r: 10.0,
+                eye: 'left'
             },
             {
-                type: 'round',
-                r: 10.0,
+                type: 'eye',
                 x: 30.0,
                 y: -50.0,
-                color: [0xff, 0xff, 0xff],
-                attachments: [
-                    {
-                        type: 'round',
-                        r: 6.0,
-                        x: 0.0,
-                        y: 0.0,
-                        color: [0x00, 0x00, 0x00]
-                    }
-                ]
+                r: 10.0,
+                eye: 'right'
             },
             {
-                type: 'round',
-                r: 16.0,
+                type: 'nose',
                 x: 0.0,
                 y: -30.0,
-                color: [0x88, 0x77, 0xee],
-                attachments: [
-                    {
-                        type: 'round',
-                        r: 5.0,
-                        x: -6.5,
-                        y: 6.0,
-                        color: [0x00, 0x00, 0x44]
-                    },
-                    {
-                        type: 'round',
-                        r: 5.0,
-                        x: 6.5,
-                        y: 6.0,
-                        color: [0x00, 0x00, 0x44]
-                    }
-                ]
+                r: 16.0,
+                color: [0x88, 0x77, 0xee]
             },
             {
-                type: 'smile',
-                r: 40.0,
+                type: 'mouth',
                 x: 0.0,
                 y: 30.0,
-                color: [0x55, 0x00, 0x00]
+                r: 40.0
             }
         ]
+    },
+    controller: {
+        mouth: {
+            smile: 0.0,
+            open: 0.0,
+            direction: [0.0, 0.0]
+        },
+        nose: {
+        },
+        eyes: {
+            left: {
+                pupil: 0.5,
+                direction: [0.4, 0.0]
+            },
+            right: {
+                pupil: 0.25,
+                direction: [-0.4, 0.0]
+            }
+        }
     }
 };
 
@@ -82,10 +65,30 @@ const reducer = (state = initialState, action) => {
         }
     }
     if (action.type === 'TICK') {
+        const time = state.time + action.dt;
+        const controller = {
+            mouth: {
+                smile: Math.sin(time*0.333),
+                open: 0.5 + 0.5*Math.sin(time*3.0),
+                direction: [0.0, 0.0]
+            },
+            nose: {
+            },
+            eyes: {
+                left: {
+                    pupil: 0.5 + Math.sin(time*0.5)*0.2,
+                    direction: [Math.sin(time*2.111)*Math.sin(time*0.553), Math.cos(time*2.111)*Math.sin(time*0.553)]
+                },
+                right: {
+                    pupil: 0.5 + Math.sin(time*0.777)*0.2,
+                    direction: [Math.sin(-time*0.456), Math.cos(-time*0.456)]
+                }
+            }            
+        }
         return {
             ...state,
-            happiness: state.happiness - action.dt*0.25,
-            time: state.time + action.dt,
+            controller: controller,
+            time: time,
         }
     }
     return state;

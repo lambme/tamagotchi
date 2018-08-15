@@ -8,13 +8,10 @@ import Timer from '../../components/Timer/Timer';
 import './Animal.css';
 
 class Animal extends Component {
-    feedHandler = (action, value) => {
-    }
-    
     render () {
         return (
             <div className="Animal">
-                <AnimalOutput happiness={this.props.happiness} time={this.props.time} body={this.props.body}/>
+                <AnimalOutput body={this.props.body} controller={this.props.controller}/>
                 <AnimalFeeder label="feed" clicked={this.props.onFeed} />
                 <Timer interval={100.0} tick={this.props.onTick} />
             </div>
@@ -24,9 +21,7 @@ class Animal extends Component {
 
 const mapStateToProps = state => {
     return {
-        happiness: state.happiness,
-        time: state.time,
-        body: state.body
+        ...state
     };
 };
 

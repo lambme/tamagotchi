@@ -5,10 +5,6 @@ class Timer extends Component {
         timer: null,
         dt: 0.0
     };
-    
-    constructor(props) {
-        super(props);
-    }
 
     componentDidMount = () => {
         let timer = setInterval(this.tick, this.props.interval);

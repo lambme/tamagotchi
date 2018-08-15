@@ -1,0 +1,7 @@
+.Mouth {
+    fill: rgb(96.0, 0.0, 0.0);
+
+    stroke: rgb(255.0, 0.0, 0.0);
+    stroke-width: 5;
+    stroke-linecap: round;
+}
